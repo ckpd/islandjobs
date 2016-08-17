@@ -1,0 +1,61 @@
+{% extends 'jobs/base.html' %}
+{% block content %}
+    
+     <ul id="timeline">
+            {% regroup object_list by pubDate|date:"Y M" as country_list %}
+                {% for pubDate in country_list %}
+
+                    {% for item in pubDate.list %}
+                    <a href="{% url 'jobs:article' item.id %}">
+                    <li class="listing clearfix">
+                        <div class="image_wrapper">
+                            <img src="{{item.job.logo.url}}" alt="{{item.job.logo}}">
+                        </div>
+                        <div class="info">
+                            <span class="job_title">{{item.jobTitle}}</span><br>
+                            <span class="job_info">
+                               {{item.job.companyname}} <span>&bull;</span> {{item.jobCity}} <span>&bull;</span> {{item.pubDate |date:"Y | M | d"}}
+                            </span>
+                                <p class="job_info {{ item.jobType }}">
+                                <br>
+                               {{item.jobDetails|truncatechars:150}} 
+                            </p>
+                            
+                        </div>
+                        <span class="{{ item.jobType }}">{{item.jobType}}</span>
+                    </li>           
+                </a>
+                
+                {% endfor %}
+                    <li class="date">{{pubDate.grouper}}</li>
+
+            {% empty %}
+
+                  <div class="listing">
+                            <span class="job_title"><h1>No JOB lisings are available.</h1></span><br>
+                            <span class="job_info">
+                                <p>try again in a few days</p>
+                            </span>
+                            
+                        </div>
+                        
+            {% endfor %}
+                    {% if is_paginated %}
+
+     <li class="load_more">
+                        {% if page_obj.has_previous %}
+                         <a href="?page={{ page_obj.previous_page_number }}" class="button">Previous</button></a>
+                        {% endif %}
+                        {% if page_obj.has_next %}
+                        <a class="button" href="?page={{ page_obj.next_page_number }}">Load More</button></a>
+                        {% endif %}
+{% endif %}
+                </li>
+                
+                
+                <li>
+                
+                </li>
+            </ul>
+    
+{% endblock %}
