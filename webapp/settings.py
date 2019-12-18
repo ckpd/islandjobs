@@ -27,7 +27,7 @@ DEBUG = False
 
 TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = [‘islandjobs.herokuapp.com’]
+ALLOWED_HOSTS = ['islandjobs.herokuapp.com', '*']
 
 
 
@@ -83,11 +83,14 @@ WSGI_APPLICATION = 'webapp.wsgi.application'
 # Database
 
 
-DATABASES = settings.DATABASES
-# Parse database configuration from $DATABASE_URL
-import dj_database_url
-DATABASES['default'] =  dj_database_url.config()
-
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+            'read_default_file': '/etc/mysql/my.cnf',
+        },
+    }
+}
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
